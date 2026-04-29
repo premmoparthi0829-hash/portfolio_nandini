@@ -679,6 +679,14 @@ img {
     color: var(--text-color-light);
 }
 
+.contact__link {
+    cursor: pointer;
+}
+
+.contact__subtitle:hover {
+    color: var(--first-color);
+}
+
 .contact__content {
     background-color: var(--input-color);
     border-radius: .5rem;
