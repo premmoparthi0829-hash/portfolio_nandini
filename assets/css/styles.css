@@ -425,94 +425,132 @@ img {
 
 /*==================== SKILLS ====================*/
 .skills__container {
-    row-gap: 0;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2rem;
 }
 
-.skills__header {
+.skills__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 900px;
+    width: 100%;
+}
+
+.skills__card {
+    position: relative;
+    padding: 1.25rem 0.75rem;
+    border-radius: 0.75rem;
+    background: var(--container-color);
+    overflow: visible;
     display: flex;
+    justify-content: center;
     align-items: center;
-    margin-bottom: var(--mb-2-5);
-    cursor: pointer;
 }
 
-.skills__icon, 
-.skills__arrow {
-    font-size: 2rem;
-    color: var(--first-color);
-}
-
-.skills__icon {
-    margin-right: var(--mb-0-75);
-}
-
-.skills__title {
-    font-size: var(--h3-font-size);
-}
-
-.skills__subtitle {
-    font-size: var(--small-font-size);
-    color: var(--text-color-light);
-}
-
-.skills__arrow {
-    margin-left: auto;
-    transition: .4s;
-}
-
-.skills__list {
-    row-gap: 1.5rem;
-    padding-left: 2.7rem;
-}
-
-.skills__titles {
+.skills__card-inner {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: var(--mb-0-5);
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.75rem;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
 }
 
-.skills__name {
+.skills__card-img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+    transition: all 0.5s;
+}
+
+.skills__card-icon {
+    font-size: 2.75rem;
+    color: var(--color);
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+    transition: all 0.5s;
+}
+
+.skills__card-name {
     font-size: var(--normal-font-size);
     font-weight: var(--font-medium);
+    color: var(--title-color);
+    transition: all 0.3s;
+    opacity: 0.8;
 }
 
-.skills__bar, 
-.skills__percentage {
-    height: 5px;
-    border-radius: .25rem;
+/* Hover Effects */
+.skills__card:hover {
+    transform: translateY(-12px) scale(1.02);
+    border-color: var(--color);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3), 
+                0 0 20px -5px var(--color);
 }
 
-.skills__bar {
-    background-color: var(--first-color-lighter);
+.skills__card:hover .skills__card-inner {
+    transform: translateZ(50px);
 }
 
-.skills__percentage {
-    display: block;
-    background-color: var(--first-color);
+.skills__card:hover .skills__card-img,
+.skills__card:hover .skills__card-icon {
+    transform: scale(1.15);
+    filter: drop-shadow(0 12px 25px var(--color));
 }
 
-.skills__photoshop { width: 90%; }
-.skills__illustrator { width: 85%; }
-.skills__figma { width: 80%; }
-.skills__canva { width: 95%; }
-.skills__firefly { width: 90%; }
-.skills__midjourney { width: 85%; }
-.skills__gemini { width: 80%; }
-
-.skills__close .skills__list {
-    height: 0;
-    overflow: hidden;
+.skills__card:hover .skills__card-name {
+    opacity: 1;
+    color: var(--color);
+    transform: translateY(3px);
 }
 
-.skills__open .skills__list {
-    height: max-content;
-    margin-bottom: var(--mb-2-5);
+/* Float Animation */
+.skills__card-img, .skills__card-icon {
+    animation: skillBounce 5s ease-in-out infinite;
 }
 
-.skills__open .skills__arrow {
-    transform: rotate(-180deg);
+@keyframes skillBounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-6px) rotate(2deg); }
+    66% { transform: translateY(-3px) rotate(-2deg); }
 }
 
-/*==================== QUALIFICATION ====================*/
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .skills__grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .skills__card {
+        padding: 2rem 1rem;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .skills__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Dark Theme Specifics */
+body.dark-theme .skills__card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+body.dark-theme .skills__card:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: var(--color);
+    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5), 
+                0 0 20px -5px var(--color);
+}
 .qualification__tabs {
     display: flex;
     justify-content: space-evenly;
