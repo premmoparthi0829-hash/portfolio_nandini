@@ -386,9 +386,16 @@ img {
 /*==================== ABOUT ====================*/
 .about__img {
     width: 200px;
-    border-radius: .5rem;
+    border-radius: 1rem;
     justify-self: center;
     align-self: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.about__img:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(131, 56, 236, 0.3);
 }
 
 .about__description {
@@ -443,11 +450,15 @@ img {
     position: relative;
     padding: 1.25rem 0.75rem;
     border-radius: 0.75rem;
-    background: var(--container-color);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(120, 120, 120, 0.2);
     overflow: visible;
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .skills__card-inner {
@@ -637,13 +648,44 @@ body.dark-theme .skills__card:hover {
 }
 
 .portfolio__content {
-    padding: 0 1.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(120, 120, 120, 0.2);
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+}
+
+body.dark-theme .portfolio__content {
+    background: rgba(30, 30, 40, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.portfolio__content:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .portfolio__content:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
 }
 
 .portfolio__img {
     width: 265px;
-    border-radius: .5rem;
+    border-radius: 0.75rem;
     justify-self: center;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.portfolio__content:hover .portfolio__img {
+    transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 .portfolio__title {
@@ -1101,5 +1143,50 @@ body.dark-theme .skills__card:hover {
 
 .change-theme:hover {
     color: var(--first-color);
+}
+
+/*==================== CUSTOM CURSOR ====================*/
+* {
+    /* Optional: hide default cursor if you want true custom cursor everywhere */
+    /* cursor: none !important; */
+}
+
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--first-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    z-index: 99999;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s;
+}
+
+.cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--first-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    z-index: 99998;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+/* Hover state for links and buttons */
+.cursor-hover .cursor-outline {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(131, 56, 236, 0.1); /* Slight glow */
+    border-color: transparent;
+}
+.cursor-hover .cursor-dot {
+    transform: translate(-50%, -50%) scale(1.5);
 }
 
