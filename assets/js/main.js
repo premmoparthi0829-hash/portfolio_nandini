@@ -148,16 +148,72 @@ themeButton.addEventListener('click', () => {
     localStorage.setItem('selected-icon', getCurrentIcon())
 })
 
-/*==================== DYNAMIC CONTENT LOAD ====================*/
+const defaultPortfolioData = {
+    home: {
+        title: "Hi, I'm Nandini",
+        subtitle: "Senior Graphic Designer",
+        description: "Creative and detail-oriented Senior Graphic Designer with 4 years of experience developing impactful visual content for digital and print media."
+    },
+    about: {
+        description: "Expertise in branding, social media campaigns, advertising creatives, and corporate communications. Adept at managing multiple projects under tight deadlines while maintaining brand consistency and high-quality standards.",
+        exp_years: "04+",
+        projects_count: "50+",
+        companies_count: "04+"
+    },
+    skills: [
+        { name: "Photoshop", color: "#31A8FF", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg" },
+        { name: "Illustrator", color: "#FF9A00", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/illustrator/illustrator-plain.svg" },
+        { name: "InDesign", color: "#FF3366", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/indesign/indesign-original.svg" },
+        { name: "Figma", color: "#F24E1E", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
+        { name: "Premiere", color: "#9999FF", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/premierepro/premierepro-original.svg" },
+        { name: "After Effects", color: "#CF96FD", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/aftereffects/aftereffects-original.svg" }
+    ],
+    experience: {
+        work: [
+            { title: "Senior Graphic Designer", subtitle: "All Hands Global Pvt Ltd", date: "Jan 2026 - Present" },
+            { title: "Graphic Designer", subtitle: "Freyr Energy Services Pvt Ltd", date: "Jan 2023 - Jan 2026" },
+            { title: "Visual Content Creator", subtitle: "Pulp Strategy", date: "Nov 2021 - Jan 2023" }
+        ],
+        edu: [
+            { title: "B.Tech in Computer Science", subtitle: "Christu Jyothi Institute of Technology", date: "2018 - 2021" },
+            { title: "Diploma in Graphics", subtitle: "Arena Animation", date: "2017 - 2018" }
+        ]
+    },
+    projects: [
+        { title: "Freyr Energy Branding", description: "Complete brand identity redesign including social media and print assets.", image: "assets/img/portfolio1.jpg", link: "#" },
+        { title: "Pulp Strategy Campaign", description: "Digital ad campaign for a major retail client.", image: "assets/img/portfolio2.jpg", link: "#" }
+    ],
+    contact: {
+        phone: "7287928766",
+        email: "nandini.vaddepalli31@gmail.com",
+        location: "Hyderabad, India 500084"
+    }
+};
+
 async function loadDynamicContent() {
     try {
         const doc = await db.collection('portfolio').doc('content').get();
+        let data = { ...defaultPortfolioData };
+        
         if (doc.exists) {
-            const data = doc.data();
-            renderDynamicSections(data);
+            const fetchedData = doc.data();
+            // Merge with defaults to ensure no section is completely empty if partially configured
+            data = {
+                home: { ...defaultPortfolioData.home, ...fetchedData.home },
+                about: { ...defaultPortfolioData.about, ...fetchedData.about },
+                skills: (fetchedData.skills && fetchedData.skills.length > 0) ? fetchedData.skills : defaultPortfolioData.skills,
+                experience: {
+                    work: (fetchedData.experience?.work && fetchedData.experience.work.length > 0) ? fetchedData.experience.work : defaultPortfolioData.experience.work,
+                    edu: (fetchedData.experience?.edu && fetchedData.experience.edu.length > 0) ? fetchedData.experience.edu : defaultPortfolioData.experience.edu
+                },
+                projects: (fetchedData.projects && fetchedData.projects.length > 0) ? fetchedData.projects : defaultPortfolioData.projects,
+                contact: { ...defaultPortfolioData.contact, ...fetchedData.contact }
+            };
         }
+        renderDynamicSections(data);
     } catch (error) {
-        console.error("Error loading content:", error);
+        console.error("Error loading from Firebase, using default data:", error);
+        renderDynamicSections(defaultPortfolioData);
     }
 }
 
@@ -200,20 +256,23 @@ function renderDynamicSections(data) {
     // Skills
     if (data.skills) {
         const grid = document.getElementById('skills-grid');
-        grid.innerHTML = '';
-        data.skills.forEach(skill => {
-            grid.innerHTML += `
-                <div class="skills__card" style="--color: ${skill.color || '#8338EC'};">
-                    <div class="skills__card-inner">
-                        ${skill.icon.includes('svg') || skill.icon.includes('http') 
-                            ? `<img src="${skill.icon}" alt="${skill.name}" class="skills__card-img">`
-                            : `<i class="${skill.icon} skills__card-icon"></i>`
-                        }
-                        <h3 class="skills__card-name">${skill.name}</h3>
+        if (grid) {
+            grid.innerHTML = '';
+            data.skills.forEach(skill => {
+                const iconHtml = (skill.icon && (skill.icon.includes('svg') || skill.icon.includes('http')))
+                    ? `<img src="${skill.icon}" alt="${skill.name}" class="skills__card-img">`
+                    : `<i class="${skill.icon || 'uil uil-brackets-curly'} skills__card-icon"></i>`;
+                
+                grid.innerHTML += `
+                    <div class="skills__card" style="--color: ${skill.color || '#8338EC'};">
+                        <div class="skills__card-inner">
+                            ${iconHtml}
+                            <h3 class="skills__card-name">${skill.name}</h3>
+                        </div>
                     </div>
-                </div>
-            `;
-        });
+                `;
+            });
+        }
     }
 
     // Portfolio

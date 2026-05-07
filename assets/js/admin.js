@@ -10,6 +10,39 @@ const sidebarItems = document.querySelectorAll('.sidebar__item');
 const panels = document.querySelectorAll('.section-panel');
 const toast = document.getElementById('toast');
 
+/*==================== DARK LIGHT THEME ====================*/ 
+const themeButton = document.getElementById('theme-button')
+const darkTheme = 'dark-theme'
+const iconTheme = 'uil-sun'
+
+// Previously selected topic (if user selected)
+const selectedTheme = localStorage.getItem('selected-theme')
+const selectedIcon = localStorage.getItem('selected-icon')
+
+// We obtain the current theme that the interface has by validating the dark-theme class
+const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light'
+const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'uil-moon' : 'uil-sun'
+
+// We validate if the user previously chose a topic
+if (selectedTheme) {
+  // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
+  document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme)
+  if(themeButton) themeButton.classList[selectedIcon === 'uil-moon' ? 'add' : 'remove'](iconTheme)
+}
+
+// Activate / deactivate the theme manually with the button
+if(themeButton) {
+    themeButton.addEventListener('click', () => {
+        // Add or remove the dark / icon theme
+        document.body.classList.toggle(darkTheme)
+        themeButton.classList.toggle(iconTheme)
+        // We save the theme and the current icon that the user chose
+        localStorage.setItem('selected-theme', getCurrentTheme())
+        localStorage.setItem('selected-icon', getCurrentIcon())
+    })
+}
+
+
 // --- AUTHENTICATION ---
 loginBtn.addEventListener('click', () => {
     const email = document.getElementById('email').value;
@@ -40,7 +73,14 @@ demoBtn.addEventListener('click', () => {
 });
 
 logoutBtn.addEventListener('click', () => {
-    auth.signOut();
+    if (auth.currentUser) {
+        auth.signOut();
+    } else {
+        // Fallback for Demo Mode: manually show login section
+        loginSection.style.display = 'flex';
+        adminDashboard.style.display = 'none';
+        showToast("Logged out from Demo Mode");
+    }
 });
 
 auth.onAuthStateChanged(user => {
@@ -72,16 +112,71 @@ sidebarItems.forEach(item => {
 let portfolioData = {};
 
 async function loadAllData() {
-    const doc = await db.collection('portfolio').doc('content').get();
-    if (doc.exists) {
-        portfolioData = doc.data();
+    try {
+        const doc = await db.collection('portfolio').doc('content').get();
+        // Use default data defined in initDefaultData function logic (we'll move it up or reference it)
+        const defaults = getDefaultData(); 
+        
+        if (doc.exists) {
+            const fetchedData = doc.data();
+            portfolioData = {
+                home: { ...defaults.home, ...fetchedData.home },
+                about: { ...defaults.about, ...fetchedData.about },
+                skills: (fetchedData.skills && fetchedData.skills.length > 0) ? fetchedData.skills : defaults.skills,
+                experience: {
+                    work: (fetchedData.experience?.work && fetchedData.experience.work.length > 0) ? fetchedData.experience.work : defaults.experience.work,
+                    edu: (fetchedData.experience?.edu && fetchedData.experience.edu.length > 0) ? fetchedData.experience.edu : defaults.experience.edu
+                },
+                projects: (fetchedData.projects && fetchedData.projects.length > 0) ? fetchedData.projects : defaults.projects,
+                contact: { ...defaults.contact, ...fetchedData.contact }
+            };
+        } else {
+            portfolioData = defaults;
+            console.log("No data found, using defaults.");
+        }
+        
         populateForms();
         renderLists();
-    } else {
-        // Initialize with default data if empty
-        console.log("No data found, initializing default...");
-        initDefaultData();
+    } catch (error) {
+        console.error("Error loading data:", error);
+        showToast("Error loading data. Check console.");
     }
+}
+
+function getDefaultData() {
+    return {
+        home: {
+            title: "Hi, I'm Nandini",
+            subtitle: "Senior Graphic Designer",
+            description: "Creative and detail-oriented Senior Graphic Designer with 4 years of experience."
+        },
+        about: {
+            description: "Expertise in branding, social media campaigns, advertising creatives...",
+            exp_years: "04+",
+            projects_count: "50+",
+            companies_count: "04+"
+        },
+        skills: [
+            { name: "Photoshop", color: "#31A8FF", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg" },
+            { name: "Illustrator", color: "#FF9A00", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/illustrator/illustrator-plain.svg" }
+        ],
+        experience: {
+            work: [
+                { title: "Senior Graphic Designer", subtitle: "All Hands Global Pvt Ltd", date: "Jan 2026 - Present" }
+            ],
+            edu: [
+                { title: "B.Tech", subtitle: "Christu Jyothi Institute of Technology", date: "2018 - 2021" }
+            ]
+        },
+        projects: [
+            { title: "Freyr Energy Branding", description: "Designed branding materials...", image: "assets/img/portfolio1.jpg", link: "#" }
+        ],
+        contact: {
+            phone: "7287928766",
+            email: "nandini.vaddepalli31@gmail.com",
+            location: "Hyderabad, India 500084"
+        }
+    };
 }
 
 function showToast(msg) {
@@ -118,28 +213,43 @@ function populateForms() {
     }
 }
 
+// Helper to update data (handles both Firebase and Demo Mode)
+async function saveData(field, data) {
+    if (auth.currentUser) {
+        try {
+            await db.collection('portfolio').doc('content').update({ [field]: data });
+            showToast(`${field.charAt(0).toUpperCase() + field.slice(1)} updated!`);
+        } catch (error) {
+            console.error("Save error:", error);
+            showToast("Error saving to Firebase.");
+        }
+    } else {
+        // Demo Mode: Update local state only
+        portfolioData[field] = data;
+        renderLists(); // Refresh lists if needed
+        showToast(`${field.charAt(0).toUpperCase() + field.slice(1)} updated (Demo Mode)!`);
+    }
+}
+
 document.getElementById('home-form').onsubmit = e => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    db.collection('portfolio').doc('content').update({ home: data })
-        .then(() => showToast("Home updated!"));
+    saveData('home', data);
 };
 
 document.getElementById('about-form').onsubmit = e => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    db.collection('portfolio').doc('content').update({ about: data })
-        .then(() => showToast("About updated!"));
+    saveData('about', data);
 };
 
 document.getElementById('contact-form').onsubmit = e => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    db.collection('portfolio').doc('content').update({ contact: data })
-        .then(() => showToast("Contact updated!"));
+    saveData('contact', data);
 };
 
 // --- LIST RENDERING ---
@@ -272,74 +382,37 @@ document.getElementById('modal-form').onsubmit = async e => {
     if (currentModalType === 'skill') {
         if (!portfolioData.skills) portfolioData.skills = [];
         portfolioData.skills.push(data);
-        await db.collection('portfolio').doc('content').update({ skills: portfolioData.skills });
+        await saveData('skills', portfolioData.skills);
     } else if (currentModalType === 'experience') {
         if (!portfolioData.experience) portfolioData.experience = { work: [], edu: [] };
         portfolioData.experience[currentModalSubtype].push(data);
-        await db.collection('portfolio').doc('content').update({ experience: portfolioData.experience });
+        await saveData('experience', portfolioData.experience);
     } else if (currentModalType === 'portfolio') {
         if (!portfolioData.projects) portfolioData.projects = [];
         portfolioData.projects.push(data);
-        await db.collection('portfolio').doc('content').update({ projects: portfolioData.projects });
+        await saveData('projects', portfolioData.projects);
     }
 
     closeModal();
-    loadAllData();
-    showToast("Item added!");
+    renderLists();
 };
 
 async function deleteItem(field, index) {
     if (confirm("Are you sure you want to delete this?")) {
         portfolioData[field].splice(index, 1);
-        await db.collection('portfolio').doc('content').update({ [field]: portfolioData[field] });
-        loadAllData();
+        await saveData(field, portfolioData[field]);
+        renderLists();
     }
 }
 
 async function deleteExperience(subtype, index) {
     if (confirm("Are you sure?")) {
         portfolioData.experience[subtype].splice(index, 1);
-        await db.collection('portfolio').doc('content').update({ experience: portfolioData.experience });
-        loadAllData();
+        await saveData('experience', portfolioData.experience);
+        renderLists();
     }
 }
 
 // --- INITIALIZATION ---
-function initDefaultData() {
-    const defaultData = {
-        home: {
-            title: "Hi, I'm Nandini",
-            subtitle: "Senior Graphic Designer",
-            description: "Creative and detail-oriented Senior Graphic Designer with 4 years of experience."
-        },
-        about: {
-            description: "Expertise in branding, social media campaigns, advertising creatives...",
-            exp_years: "04+",
-            projects_count: "50+",
-            companies_count: "04+"
-        },
-        skills: [
-            { name: "Photoshop", color: "#31A8FF", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg" },
-            { name: "Illustrator", color: "#FF9A00", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/illustrator/illustrator-plain.svg" }
-        ],
-        experience: {
-            work: [
-                { title: "Senior Graphic Designer", subtitle: "All Hands Global Pvt Ltd", date: "Jan 2026 - Present" }
-            ],
-            edu: [
-                { title: "B.Tech", subtitle: "Christu Jyothi Institute of Technology", date: "2018 - 2021" }
-            ]
-        },
-        projects: [
-            { title: "Freyr Energy Branding", description: "Designed branding materials...", image: "assets/img/portfolio1.jpg", link: "#" }
-        ],
-        contact: {
-            phone: "7287928766",
-            email: "nandini.vaddepalli31@gmail.com",
-            location: "Hyderabad, India 500084"
-        }
-    };
-    db.collection('portfolio').doc('content').set(defaultData).then(() => {
-        loadAllData();
-    });
-}
+// No longer needed as loadAllData handles defaults through getDefaultData()
+
