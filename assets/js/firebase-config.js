@@ -1,12 +1,13 @@
 // Your Firebase configuration
 // REPLACE THIS WITH YOUR ACTUAL CONFIG FROM FIREBASE CONSOLE
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyAdrPnBGcVyyThIr6i-gCEnQ2OZvgdMf74",
+    authDomain: "nandini-portfolio-31.firebaseapp.com",
+    projectId: "nandini-portfolio-31",
+    storageBucket: "nandini-portfolio-31.firebasestorage.app",
+    messagingSenderId: "105491531330",
+    appId: "1:105491531330:web:10162797c89d5478240fdb",
+    measurementId: "G-FR14YR4LVK"
 };
 
 // Initialize Firebase

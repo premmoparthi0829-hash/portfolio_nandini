@@ -113,8 +113,8 @@ let portfolioData = {};
 
 async function loadAllData() {
     try {
-        const doc = await db.collection('portfolio').doc('content').get();
-        // Use default data defined in initDefaultData function logic (we'll move it up or reference it)
+        const docRef = db.collection('portfolio').doc('content');
+        const doc = await docRef.get();
         const defaults = getDefaultData(); 
         
         if (doc.exists) {
@@ -131,15 +131,31 @@ async function loadAllData() {
                 contact: { ...defaults.contact, ...fetchedData.contact }
             };
         } else {
+            // Document doesn't exist, try to initialize it automatically
+            console.log("Database empty, initializing with defaults...");
             portfolioData = defaults;
-            console.log("No data found, using defaults.");
+            if (auth.currentUser) {
+                try {
+                    await docRef.set(defaults);
+                    showToast("Database initialized successfully!");
+                } catch (e) {
+                    console.error("Init error:", e);
+                    showToast("Initialized locally, but failed to save to Firebase.");
+                }
+            }
         }
         
         populateForms();
         renderLists();
     } catch (error) {
-        console.error("Error loading data:", error);
-        showToast("Error loading data. Check console.");
+        console.error("Firestore Error:", error);
+        if (error.code === 'permission-denied') {
+            showToast("Permission Denied: Please check your Firestore Rules in Firebase Console.");
+        } else if (error.code === 'unavailable') {
+            showToast("Firebase Unavailable: Check your internet or if Firestore is enabled.");
+        } else {
+            showToast("Error loading data. Make sure Firestore is enabled in Firebase Console.");
+        }
     }
 }
 
