@@ -19,6 +19,13 @@
     <!--==================== CSS ====================-->
     <link rel="stylesheet" href="assets/css/styles.css">
 
+    <!--==================== FIREBASE SDK ====================-->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+
     <title>Nandini Vaddepalli | Graphic Designer</title>
 </head>
 
@@ -173,18 +180,18 @@
                                 <path
                                     d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547 130.807 187.559 100.226 186.353C69.6454 185.147 41.0281 160.724 21.7403 129.362C2.45259 97.9993 -7.47473 59.7025 10.4588 33.9231C28.3923 8.14374 74.1831 -5.11817 114.367 1.83407C154.551 8.78631 174.042 10.8571 190.312 36.4879Z" />
                             </mask>
-                            <g mask="url(#mask0)">
+                            <g mask="url(#mask0)" id="home-blob">
                                 <path
                                     d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547 130.807 187.559 100.226 186.353C69.6454 185.147 41.0281 160.724 21.7403 129.362C2.45259 97.9993 -7.47473 59.7025 10.4588 33.9231C28.3923 8.14374 74.1831 -5.11817 114.367 1.83407C154.551 8.78631 174.042 10.8571 190.312 36.4879Z" />
-                                <image class="home__blob-img" x="12" y="18" xlink:href="assets/img/nandini_1.png" />
+                                <image class="home__blob-img" x="12" y="18" xlink:href="assets/img/nandini_1.png" id="home-img" />
                             </g>
                         </svg>
                     </div>
 
                     <div class="home__data">
-                        <h1 class="home__title">Hi, I'm Nandini</h1>
-                        <h3 class="home__subtitle"> Senior Graphic Designer</h3>
-                        <p class="home__description">Creative and detail-oriented SeniorGraphic Designer with 4 years of
+                        <h1 class="home__title" id="home-title">Hi, I'm Nandini</h1>
+                        <h3 class="home__subtitle" id="home-subtitle"> Senior Graphic Designer</h3>
+                        <p class="home__description" id="home-description">Creative and detail-oriented SeniorGraphic Designer with 4 years of
                             experience developing impactful visual content for digital and print media.</p>
                         <a href="#contact" class="button button--flex">
                             Contact Me <i class="uil uil-message button__icon"></i>
@@ -208,16 +215,16 @@
             <span class="section__subtitle">My introduction</span>
 
             <div class="about__container container grid">
-                <img src="assets/img/nandini_2.png" alt="" class="about__img">
+                <img src="assets/img/nandini_2.png" alt="" class="about__img" id="about-img">
 
                 <div class="about__data">
-                    <p class="about__description">
+                    <p class="about__description" id="about-description">
                         Expertise in branding, social media campaigns, advertising creatives, and corporate
                         communications. Adept at managing multiple projects under tight deadlines while maintaining
                         brand consistency and high-quality standards.
                     </p>
 
-                    <div class="about__info">
+                    <div class="about__info" id="about-info">
                         <div>
                             <span class="about__info-title">04+</span>
                             <span class="about__info-name">Years <br> experience</span>
@@ -233,7 +240,7 @@
                     </div>
 
                     <div class="about__buttons">
-                        <a download="" href="assets/pdf/Alexa-Cv.pdf" class="button button--flex">
+                        <a download="" href="assets/pdf/Alexa-Cv.pdf" class="button button--flex" id="resume-link">
                             Download Resume <i class="uil uil-download-alt button__icon"></i>
                         </a>
                     </div>
@@ -263,134 +270,12 @@
                 <div class="qualification__sections">
                     <!--==================== QUALIFICATION CONTENT 1 ====================-->
                     <div class="qualification__content qualification__active" data-content id="experience-content">
-                        <!--==================== QUALIFICATION 1 ====================-->
-                        <div class="qualification__data">
-                            <div>
-                                <h3 class="qualification__title">Senior Graphic Designer</h3>
-                                <span class="qualification__subtitle">All Hands Global Pvt Ltd - Hyderabad</span>
-                                <div class="qualification__calendar">
-                                    <i class="uil uil-calendar-alt"></i>
-                                    Jan 2026 - Present
-                                </div>
-                            </div>
-
-                            <div>
-                                <span class="qualification__rounder"></span>
-                                <span class="qualification__line"></span>
-                            </div>
-                        </div>
-
-                        <!--==================== QUALIFICATION 2 ====================-->
-                        <div class="qualification__data">
-                            <div></div>
-
-                            <div>
-                                <span class="qualification__rounder"></span>
-                                <span class="qualification__line"></span>
-                            </div>
-
-                            <div>
-                                <h3 class="qualification__title">Graphic Designer Excutive </h3>
-                                <span class="qualification__subtitle">Freyr Energy - Hyderabad</span>
-                                <div class="qualification__calendar">
-                                    <i class="uil uil-calendar-alt"></i>
-                                    Nov 2024 - Jan 2026
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--==================== QUALIFICATION 3 ====================-->
-                        <div class="qualification__data">
-                            <div>
-                                <h3 class="qualification__title">Graphic Designer</h3>
-                                <span class="qualification__subtitle">Mantra Technology - Hyderabad</span>
-                                <div class="qualification__calendar">
-                                    <i class="uil uil-calendar-alt"></i>
-                                    Jan 2023 - Nov 2024
-                                </div>
-                            </div>
-
-                            <div>
-                                <span class="qualification__rounder"></span>
-                                <span class="qualification__line"></span>
-                            </div>
-                        </div>
-
-                        <!--==================== QUALIFICATION 4 ====================-->
-                        <div class="qualification__data">
-                            <div></div>
-
-                            <div>
-                                <span class="qualification__rounder"></span>
-                                <!-- <span class="qualification__line"></span> -->
-                            </div>
-
-                            <div>
-                                <h3 class="qualification__title">Graphic Designer Intern</h3>
-                                <span class="qualification__subtitle">Sharplogic Agency</span>
-                                <div class="qualification__calendar">
-                                    <i class="uil uil-calendar-alt"></i>
-                                    Jan 2022 - Dec 2023
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Experience items will be injected here -->
                     </div>
 
                     <!--==================== QUALIFICATION CONTENT 2 ====================-->
                     <div class="qualification__content" data-content id="education-content">
-                        <!--==================== QUALIFICATION 1 ====================-->
-                        <div class="qualification__data">
-                            <div>
-                                <h3 class="qualification__title">B.Tech</h3>
-                                <span class="qualification__subtitle">Christu Jyothi Institute of Technology &
-                                    Science</span>
-                                <div class="qualification__calendar">
-                                    <i class="uil uil-calendar-alt"></i>
-                                    2018 - 2021
-                                </div>
-                            </div>
-
-                            <div>
-                                <span class="qualification__rounder"></span>
-                                <span class="qualification__line"></span>
-                            </div>
-                        </div>
-
-                        <!--==================== QUALIFICATION 2 ====================-->
-                        <div class="qualification__data">
-                            <div></div>
-
-                            <div>
-                                <span class="qualification__rounder"></span>
-                                <span class="qualification__line"></span>
-                            </div>
-
-                            <div>
-                                <h3 class="qualification__title">Diploma</h3>
-                                <span class="qualification__subtitle">Govt Polytechnic, Yadagirigutta</span>
-                                <div class="qualification__calendar">
-                                    <i class="uil uil-calendar-alt"></i>
-                                    2015 - 2017
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--==================== QUALIFICATION 3 ====================-->
-                        <div class="qualification__data">
-                            <div>
-                                <h3 class="qualification__title">SSC</h3>
-                                <span class="qualification__subtitle">Maa Akshara High School</span>
-                                <div class="qualification__calendar">
-                                    <i class="uil uil-calendar-alt"></i>
-                                    2015
-                                </div>
-                            </div>
-
-                            <div>
-                                <span class="qualification__rounder"></span>
-                                <!-- <span class="qualification__line"></span> -->
-                            </div>
-                        </div>
+                        <!-- Education items will be injected here -->
                     </div>
                 </div>
             </div>
@@ -402,135 +287,8 @@
             <span class="section__subtitle">My creative toolkit</span>
 
             <div class="skills__container container">
-                <div class="skills__grid">
-                    <!-- Design Skills -->
-                    <div class="skills__card" style="--color: #31A8FF;">
-                        <div class="skills__card-inner">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg" alt="Photoshop" class="skills__card-img">
-                            <h3 class="skills__card-name">Photoshop</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #FF9A00;">
-                        <div class="skills__card-inner">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/illustrator/illustrator-plain.svg" alt="Illustrator" class="skills__card-img">
-                            <h3 class="skills__card-name">Illustrator</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #FF3366;">
-                        <div class="skills__card-inner">
-                            <svg class="skills__card-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FF3366"><path d="M4.25.3C1.9.3 0 2.2 0 4.55v14.9c0 2.35 1.9 4.25 4.25 4.25h15.5c2.35 0 4.25-1.9 4.25-4.25V4.55C24 2.2 22.1.3 19.75.3zm11.31 5.13h2.03c.05-.01.09.03.1.07v9.54c0 .18.01.38.02.6.02.21.03.41.04.58 0 .07-.03.13-.1.16-.52.22-1.07.38-1.63.48-.5.09-1.02.14-1.54.14-.74.01-1.48-.14-2.15-.45-.63-.29-1.15-.77-1.51-1.36-.37-.61-.55-1.37-.55-2.28-.01-.74.18-1.47.55-2.11.38-.65.93-1.19 1.59-1.55.7-.39 1.54-.58 2.53-.58.05 0 .12 0 .21.01s.19.01.31.02V5.54c0-.07.03-.11.1-.11zm-8.93.86h1.95c.06-.01.12.03.13.1.01.01.01.02.01.03v10.26c0 .11-.05.16-.14.16H6.62c-.09 0-.13-.05-.13-.16V6.42c0-.09.05-.13.14-.13zm8.23 4.24c-.39 0-.78.08-1.13.26-.34.17-.63.42-.85.74-.22.32-.33.75-.33 1.27-.01.35.05.7.17 1.03.1.27.25.51.45.71.19.18.42.32.68.4.27.09.55.13.83.13.15 0 .29-.01.42-.02.13.01.25-.01.36-.05v-4.4c-.09-.02-.18-.04-.27-.05-.11-.01-.22-.02-.33-.02z"/></svg>
-                            <h3 class="skills__card-name">InDesign</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #F24E1E;">
-                        <div class="skills__card-inner">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="Figma" class="skills__card-img">
-                            <h3 class="skills__card-name">Figma</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #00C4CC;">
-                        <div class="skills__card-inner">
-                            <svg class="skills__card-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#00C4CC"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zM6.962 7.68c.754 0 1.337.549 1.405 1.2.069.583-.171 1.097-.822 1.406-.343.171-.48.172-.549.069-.034-.069 0-.137.069-.206.617-.514.617-.926.548-1.508-.034-.378-.308-.618-.583-.618-1.2 0-2.914 2.674-2.674 4.629.103.754.549 1.646 1.509 1.646.308 0 .65-.103.96-.24.5-.264.799-.47 1.097-.8-.073-.885.704-2.046 1.851-2.046.515 0 .926.205.96.583.068.514-.377.582-.514.582s-.378-.034-.378-.17c-.034-.138.309-.07.275-.378-.035-.206-.24-.274-.446-.274-.72 0-1.131.994-1.029 1.611.035.275.172.549.447.549.205 0 .514-.31.617-.755.068-.308.343-.514.583-.514.102 0 .17.034.205.171v.138c-.034.137-.137.548-.102.651 0 .069.034.171.17.171.092 0 .436-.18.777-.459.117-.59.253-1.298.253-1.357.034-.24.137-.48.617-.48.103 0 .171.034.205.171v.138l-.136.617c.445-.583 1.097-.994 1.508-.994.172 0 .309.102.309.274 0 .103 0 .274-.069.446-.137.377-.309.96-.412 1.474 0 .137.035.274.207.274.171 0 .685-.206 1.096-.754l.007-.004c-.002-.068-.007-.134-.007-.202 0-.411.035-.754.104-.994.068-.274.411-.514.617-.514.103 0 .205.069.205.171 0 .035 0 .103-.034.137-.137.446-.24.857-.24 1.269 0 .24.034.582.102.788 0 .034.035.069.07.069.068 0 .548-.445.89-1.028-.308-.206-.48-.549-.48-.96 0-.72.446-1.097.858-1.097.343 0 .617.24.617.72 0 .308-.103.65-.274.96h.102a.77.77 0 0 0 .584-.24.293.293 0 0 1 .134-.117c.335-.425.83-.74 1.41-.74.48 0 .924.205.959.582.068.515-.378.618-.515.618l-.002-.002c-.138 0-.377-.035-.377-.172 0-.137.309-.068.274-.376-.034-.206-.24-.275-.446-.275-.686 0-1.13.891-1.028 1.611.034.275.171.583.445.583.206 0 .515-.308.652-.754.068-.274.343-.514.583-.514.103 0 .17.034.205.171 0 .069 0 .206-.137.652-.17.308-.171.48-.137.617.034.274.171.48.309.583.034.034.068.102.068.102 0 .069-.034.138-.137.138-.034 0-.068 0-.103-.035-.514-.205-.72-.548-.789-.891-.205.24-.445.377-.72.377-.445 0-.89-.411-.96-.926a1.609 1.609 0 0 1 .075-.649c-.203.13-.422.203-.623.203h-.17c-.447.652-.927 1.098-1.27 1.303a.896.896 0 0 1-.377.104c-.068 0-.171-.035-.205-.104-.095-.152-.156-.392-.193-.667-.481.527-1.145.805-1.453.805-.343 0-.548-.206-.582-.55v-.376c.102-.754.377-1.2.377-1.337a.074.074 0 0 0-.069-.07c-.24 0-1.028.824-1.166 1.373l-.103.445c-.068.309-.377.515-.582.515-.103 0-.172-.035-.206-.172v-.137l.046-.233c-.435.31-.87.508-1.075.508-.308 0-.48-.172-.514-.412-.206.274-.445.412-.754.412-.352 0-.696-.24-.862-.593-.244.275-.523.553-.852.764-.48.309-1.028.549-1.68.549-.582 0-1.097-.309-1.371-.583-.412-.377-.651-.96-.686-1.509-.205-1.68.823-3.84 2.4-4.8.378-.205.755-.343 1.132-.343zm9.77 3.291c-.104 0-.172.172-.172.343 0 .274.137.583.309.755a1.74 1.74 0 0 0 .102-.583c0-.343-.137-.515-.24-.515z"/></svg>
-                            <h3 class="skills__card-name">Canva</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #172A3C;">
-                        <div class="skills__card-inner">
-                            <svg class="skills__card-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#172A3C"><path d="M20.098 0A3.899 3.899 0 0 1 24 3.903v16.194A3.899 3.899 0 0 1 20.098 24H6.393l-.051-10.34v-.074c0-3.92 3.112-7.09 6.963-7.09 2.31 0 4.177 1.902 4.177 4.254 0 2.352-1.867 4.254-4.177 4.254-.77 0-1.393-.634-1.393-1.418 0-.783.623-1.418 1.393-1.418.769 0 1.392-.634 1.392-1.418 0-.784-.623-1.418-1.392-1.418-2.31 0-4.178 1.9-4.178 4.253 0 2.352 1.868 4.254 4.178 4.254 3.85 0 6.962-3.169 6.962-7.09 0-3.92-3.112-7.089-6.962-7.089-5.39 0-9.75 4.436-9.75 9.925v.086l.023 10.315A3.899 3.899 0 0 1 0 20.097V3.903A3.899 3.899 0 0 1 3.902 0z"/></svg>
-                            <h3 class="skills__card-name">Photopea</h3>
-                        </div>
-                    </div>
-
-                    <!-- AI Tools -->
-                    <div class="skills__card" style="--color: #7B61FF;">
-                        <div class="skills__card-inner">
-                            <i class="uil uil-cube skills__card-icon"></i>
-                            <h3 class="skills__card-name">Ideogram</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #10A37F;">
-                        <div class="skills__card-inner">
-                            <svg class="skills__card-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#10A37F"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg>
-                            <h3 class="skills__card-name">ChatGPT</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #FF2B2B;">
-                        <div class="skills__card-inner">
-                            <i class="uil uil-bolt-alt skills__card-icon"></i>
-                            <h3 class="skills__card-name">Adobe Firefly</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #4285F4;">
-                        <div class="skills__card-inner">
-                            <svg class="skills__card-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#4285F4"><path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/></svg>
-                            <h3 class="skills__card-name">Google Gemini/Imagen</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #FABB05;">
-                        <div class="skills__card-inner">
-                            <i class="uil uil-film skills__card-icon"></i>
-                            <h3 class="skills__card-name">Google AI VEO3</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #FF4A8D;">
-                        <div class="skills__card-inner">
-                            <svg class="skills__card-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FF4A8D"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg>
-                            <h3 class="skills__card-name">OpenAI Sora</h3>
-                        </div>
-                    </div>
-
-                    <!-- Stock Images -->
-                    <div class="skills__card" style="--color: #E52024;">
-                        <div class="skills__card-inner">
-                            <svg class="skills__card-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#E52024"><path d="M9.839 18.761h5.313a1.53 1.53 0 0 0 1.527-1.528v-5.76h5.237v5.76A6.767 6.767 0 0 1 15.152 24H9.839v-5.239M14.16 5.237H8.85a1.53 1.53 0 0 0-1.53 1.527v5.761H2.085V6.764A6.763 6.763 0 0 1 8.85 0h5.31v5.237Z"/></svg>
-                            <h3 class="skills__card-name">Shutterstock</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #FF0000;">
-                        <div class="skills__card-inner">
-                            <i class="uil uil-image-plus skills__card-icon"></i>
-                            <h3 class="skills__card-name">Adobe Stock</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #05A081;">
-                        <div class="skills__card-inner">
-                            <svg class="skills__card-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#05A081"><path d="M1.5 0A1.5 1.5 0 000 1.5v21A1.5 1.5 0 001.5 24h21a1.5 1.5 0 001.5-1.5v-21A1.5 1.5 0 0022.5 0h-21zm6.75 6.75h5.2715a3.843 3.843 0 01.627 7.6348V17.25H8.25V6.75zm1.5 1.5v7.5h2.8984v-2.8145h.873a2.343 2.343 0 100-4.6855H9.75Z"/></svg>
-                            <h3 class="skills__card-name">Pexels</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #00AB6B;">
-                        <div class="skills__card-inner">
-                            <svg class="skills__card-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#00AB6B"><path d="M5.627 10.234a.888.888 0 01-.887-.888H1.7c0 .49-.398.888-.888.888H0v9.447h15.56v-9.447H5.64zm-.886 2.796h-3.04v-1.323h3.04v1.323zm5.344 5.234a3.271 3.271 0 01-3.267-3.269c0-1.802 1.466-3.193 3.267-3.193s3.267 1.39 3.267 3.193a3.271 3.271 0 01-3.267 3.269zm1.756-3.269c0 .969-.788 1.757-1.756 1.757a1.759 1.759 0 01-1.756-1.757c0-.969.788-1.757 1.756-1.757s1.756.788 1.756 1.757zM24 9.501l-3.93 10.156-3.164-1.226V16.7l2.242.869 2.765-7.146L11.55 6.407l-.96 2.482h-1.73l1.769-4.57L24 9.501Z"/></svg>
-                            <h3 class="skills__card-name">Pixabay</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #333333;">
-                        <div class="skills__card-inner">
-                            <i class="uil uil-images skills__card-icon"></i>
-                            <h3 class="skills__card-name">Rawpixel</h3>
-                        </div>
-                    </div>
-
-                    <div class="skills__card" style="--color: #007BFF;">
-                        <div class="skills__card-inner">
-                            <i class="uil uil-arrow-to-bottom skills__card-icon"></i>
-                            <h3 class="skills__card-name">Steptodown</h3>
-                        </div>
-                    </div>
+                <div class="skills__grid" id="skills-grid">
+                    <!-- Skills will be injected here -->
                 </div>
             </div>
         </section>
@@ -541,51 +299,8 @@
             <span class="section__subtitle">Most recent work</span>
 
             <div class="portfolio__container container swiper-container">
-                <div class="swiper-wrapper">
-                    <!--==================== PORTFOLIO 1 ====================-->
-                    <div class="portfolio__content grid swiper-slide">
-                        <img src="assets/img/portfolio1.jpg" alt="" class="portfolio__img">
-
-                        <div class="portfolio__data">
-                            <h3 class="portfolio__title">Freyr Energy Branding</h3>
-                            <p class="portfolio__description">Designed branding materials for Experience Centres
-                                including banners, standees, and brochures.</p>
-                            <a href="#" class="button button--flex button--small portfolio__button">
-                                View Case Study
-                                <i class="uil uil-arrow-right button__icon"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!--==================== PORTFOLIO 2 ====================-->
-                    <div class="portfolio__content grid swiper-slide">
-                        <img src="assets/img/portfolio2.jpg" alt="" class="portfolio__img">
-
-                        <div class="portfolio__data">
-                            <h3 class="portfolio__title">GharPe Visuals</h3>
-                            <p class="portfolio__description">Website visual images and 360° property images to enhance
-                                property presentation for real estate platform.</p>
-                            <a href="#" class="button button--flex button--small portfolio__button">
-                                View Case Study
-                                <i class="uil uil-arrow-right button__icon"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!--==================== PORTFOLIO 3 ====================-->
-                    <div class="portfolio__content grid swiper-slide">
-                        <img src="assets/img/portfolio3.jpg" alt="" class="portfolio__img">
-
-                        <div class="portfolio__data">
-                            <h3 class="portfolio__title">Social Media Campaigns</h3>
-                            <p class="portfolio__description">Designed engaging social media creatives for various
-                                brands, boosting lead generation.</p>
-                            <a href="#" class="button button--flex button--small portfolio__button">
-                                View Case Study
-                                <i class="uil uil-arrow-right button__icon"></i>
-                            </a>
-                        </div>
-                    </div>
+                <div class="swiper-wrapper" id="portfolio-wrapper">
+                    <!-- Portfolio items will be injected here -->
                 </div>
 
                 <!-- Add Arrows -->
@@ -608,21 +323,21 @@
             <div class="contact__container container grid">
                 <div>
                     <div class="contact__information">
-                        <a href="tel:+917287928766" class="contact__link" style="display: flex; align-items: center; column-gap: .75rem; color: inherit;">
+                        <a href="#" id="contact-phone-link" class="contact__link" style="display: flex; align-items: center; column-gap: .75rem; color: inherit;">
                             <i class="uil uil-phone contact__icon"></i>
                             <div>
                                 <h3 class="contact__title">Call Me</h3>
-                                <span class="contact__subtitle">7287928766</span>
+                                <span class="contact__subtitle" id="contact-phone">7287928766</span>
                             </div>
                         </a>
                     </div>
 
                     <div class="contact__information">
-                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nandini.vaddepalli31@gmail.com" target="_blank" class="contact__link" style="display: flex; align-items: center; column-gap: .75rem; color: inherit;">
+                        <a href="#" id="contact-email-link" target="_blank" class="contact__link" style="display: flex; align-items: center; column-gap: .75rem; color: inherit;">
                             <i class="uil uil-envelope contact__icon"></i>
                             <div>
                                 <h3 class="contact__title">Email</h3>
-                                <span class="contact__subtitle">nandini.vaddepalli31@gmail.com</span>
+                                <span class="contact__subtitle" id="contact-email">nandini.vaddepalli31@gmail.com</span>
                             </div>
                         </a>
                     </div>
@@ -631,7 +346,7 @@
                         <i class="uil uil-map-marker contact__icon"></i>
                         <div>
                             <h3 class="contact__title">Location</h3>
-                            <span class="contact__subtitle">Hyderabad, India 500084</span>
+                            <span class="contact__subtitle" id="contact-location">Hyderabad, India 500084</span>
                         </div>
                     </div>
                 </div>

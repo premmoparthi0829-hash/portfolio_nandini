@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Nandini Vaddepalli</title>
+    
+    <!--==================== UNICONS ====================-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    
+    <!--==================== GOOGLE FONTS ====================-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!--==================== FIREBASE SDK ====================-->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+
+    <style>
+        :root {
+            --first-color: #8338EC;
+            --first-color-second: #8338EC;
+            --first-color-alt: #7030D1;
+            --first-color-lighter: #E2D5F3;
+            --title-color: #242329;
+            --text-color: #6D6A7C;
+            --text-color-light: #A19FAD;
+            --input-color: #F3F1F6;
+            --body-color: #FBFBFE;
+            --container-color: #FFF;
+            --scroll-bar-color: #E2E1E6;
+            --scroll-thumb-color: #CFCED6;
+        }
+
+        body.dark-theme {
+            --title-color: #F1F0F5;
+            --text-color: #BCBAC4;
+            --body-color: #191627;
+            --container-color: #211D35;
+            --input-color: #211D35;
+        }
+
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--body-color);
+            color: var(--text-color);
+            transition: .4s;
+        }
+
+        /*==================== LOGIN ====================*/
+        #login-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #8338EC 0%, #FF006E 100%);
+        }
+
+        .login__container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .login__title {
+            color: #FFF;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .login__input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 1rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            font-family: inherit;
+        }
+
+        .login__button {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 1rem;
+            border: none;
+            background: #FFF;
+            color: var(--first-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .login__button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /*==================== DASHBOARD ====================*/
+        #admin-dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .admin__layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background-color: var(--container-color);
+            padding: 2rem;
+            border-right: 1px solid var(--scroll-bar-color);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar__logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--first-color);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar__menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .sidebar__item {
+            padding: 1rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: .3s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+        }
+
+        .sidebar__item:hover, .sidebar__item.active {
+            background-color: var(--first-color-lighter);
+            color: var(--first-color);
+        }
+
+        .main-content {
+            padding: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .section-panel {
+            display: none;
+            animation: fadeIn .5s ease;
+        }
+
+        .section-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header__title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--title-color);
+        }
+
+        .form__group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form__label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--title-color);
+        }
+
+        .form__input, .form__textarea {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--scroll-bar-color);
+            background-color: var(--input-color);
+            color: var(--text-color);
+            font-family: inherit;
+        }
+
+        .form__textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: .3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--first-color);
+            color: #FFF;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--first-color-alt);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--first-color);
+            color: var(--first-color);
+        }
+
+        /* List Management */
+        .item-list {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .list-item {
+            background-color: var(--container-color);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid var(--scroll-bar-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-item__actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: .2s;
+            border: none;
+        }
+
+        .edit-btn { background-color: #E3F2FD; color: #1976D2; }
+        .delete-btn { background-color: #FFEBEE; color: #D32F2F; }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--title-color);
+            color: var(--body-color);
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            transform: translateY(100px);
+            transition: .3s;
+            z-index: 1000;
+        }
+
+        #toast.show { transform: translateY(0); }
+
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: var(--container-color);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            width: 90%;
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+
+    <!--==================== LOGIN SECTION ====================-->
+    <section id="login-section">
+        <div class="login__container">
+            <h1 class="login__title">Admin Login</h1>
+            <input type="email" id="email" class="login__input" placeholder="Email">
+            <input type="password" id="password" class="login__input" placeholder="Password">
+            <button id="login-btn" class="login__button">Login</button>
+            <button id="demo-btn" class="login__button" style="margin-top: 1rem; background: transparent; border: 1px solid #FFF; color: #FFF;">Try Demo Mode</button>
+            <p id="login-error" style="color: #FFDada; margin-top: 1rem; font-size: 0.8rem;"></p>
+        </div>
+    </section>
+
+    <!--==================== DASHBOARD SECTION ====================-->
+    <section id="admin-dashboard">
+        <div class="admin__layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar__logo">PORTFOLIO ADMIN</div>
+                <div class="sidebar__menu">
+                    <div class="sidebar__item active" data-panel="home-panel">
+                        <i class="uil uil-estate"></i> Home
+                    </div>
+                    <div class="sidebar__item" data-panel="about-panel">
+                        <i class="uil uil-user"></i> About
+                    </div>
+                    <div class="sidebar__item" data-panel="skills-panel">
+                        <i class="uil uil-file-alt"></i> Skills
+                    </div>
+                    <div class="sidebar__item" data-panel="experience-panel">
+                        <i class="uil uil-briefcase-alt"></i> Experience
+                    </div>
+                    <div class="sidebar__item" data-panel="portfolio-panel">
+                        <i class="uil uil-scenery"></i> Portfolio
+                    </div>
+                    <div class="sidebar__item" data-panel="contact-panel">
+                        <i class="uil uil-message"></i> Contact
+                    </div>
+                </div>
+                <div style="margin-top: auto;">
+                    <button id="logout-btn" class="btn btn-outline" style="width: 100%;">
+                        <i class="uil uil-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                
+                <!-- Home Panel -->
+                <div class="section-panel active" id="home-panel">
+                    <h2 class="header__title">Home Section</h2>
+                    <form id="home-form">
+                        <div class="form__group">
+                            <label class="form__label">Title</label>
+                            <input type="text" name="title" class="form__input" placeholder="Hi, I'm ...">
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label">Subtitle</label>
+                            <input type="text" name="subtitle" class="form__input" placeholder="Senior Graphic Designer">
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label">Description</label>
+                            <textarea name="description" class="form__textarea"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+
+                <!-- About Panel -->
+                <div class="section-panel" id="about-panel">
+                    <h2 class="header__title">About Section</h2>
+                    <form id="about-form">
+                        <div class="form__group">
+                            <label class="form__label">Description</label>
+                            <textarea name="description" class="form__textarea"></textarea>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label">Experience (Years)</label>
+                            <input type="text" name="exp_years" class="form__input">
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label">Projects Completed</label>
+                            <input type="text" name="projects_count" class="form__input">
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label">Companies Worked</label>
+                            <input type="text" name="companies_count" class="form__input">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+
+                <!-- Skills Panel -->
+                <div class="section-panel" id="skills-panel">
+                    <h2 class="header__title">Skills & Tools</h2>
+                    <div id="skills-list" class="item-list"></div>
+                    <button class="btn btn-outline" onclick="openModal('skill')">
+                        <i class="uil uil-plus"></i> Add New Skill
+                    </button>
+                </div>
+
+                <!-- Experience Panel -->
+                <div class="section-panel" id="experience-panel">
+                    <h2 class="header__title">Experience & Education</h2>
+                    <h3>Work Experience</h3>
+                    <div id="exp-work-list" class="item-list"></div>
+                    <button class="btn btn-outline" onclick="openModal('experience', 'work')" style="margin-bottom: 2rem;">
+                        <i class="uil uil-plus"></i> Add Work
+                    </button>
+
+                    <h3>Education</h3>
+                    <div id="exp-edu-list" class="item-list"></div>
+                    <button class="btn btn-outline" onclick="openModal('experience', 'edu')">
+                        <i class="uil uil-plus"></i> Add Education
+                    </button>
+                </div>
+
+                <!-- Portfolio Panel -->
+                <div class="section-panel" id="portfolio-panel">
+                    <h2 class="header__title">Portfolio Projects</h2>
+                    <div id="portfolio-list" class="item-list"></div>
+                    <button class="btn btn-outline" onclick="openModal('portfolio')">
+                        <i class="uil uil-plus"></i> Add Project
+                    </button>
+                </div>
+
+                <!-- Contact Panel -->
+                <div class="section-panel" id="contact-panel">
+                    <h2 class="header__title">Contact Information</h2>
+                    <form id="contact-form">
+                        <div class="form__group">
+                            <label class="form__label">Phone</label>
+                            <input type="text" name="phone" class="form__input">
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label">Email</label>
+                            <input type="email" name="email" class="form__input">
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label">Location</label>
+                            <input type="text" name="location" class="form__input">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+
+            </main>
+        </div>
+    </section>
+
+    <!-- Modal for adding/editing items -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title" style="margin-bottom: 1.5rem;">Add Item</h3>
+            <form id="modal-form">
+                <div id="modal-fields"></div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast">Changes saved!</div>
+
+    <script src="assets/js/admin.js"></script>
+</body>
+</html>
